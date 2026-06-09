@@ -25,8 +25,8 @@ import numpy as np
 import pandas as pd
 
 import config as cfg
-from data_loader import load_unlabelled_file
-from feature_extraction import (
+from src.data_loader import load_unlabelled_file
+from src.feature_extraction import (
     extract_features, calibrate_standing, is_standing, CALIB_FEAT_NAMES,
 )
 
@@ -221,7 +221,7 @@ def main():
 
     calib_window = None
     if args.calib_csv:
-        from data_loader import load_unlabelled_file
+        from src.data_loader import load_unlabelled_file
         W = pipeline_meta["window_size"]
         # Load all windows from the calib CSV — calibrate_standing handles (K, T, 9)
         calib_raw, _ = load_unlabelled_file(args.calib_csv, W, cfg.STRIDE)

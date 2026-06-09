@@ -17,7 +17,7 @@ import streamlit as st
 
 sys.path.insert(0, os.path.dirname(__file__))
 import config as cfg
-from feature_extraction import (
+from src.feature_extraction import (
     extract_features, calibrate_standing, is_standing, CALIB_FEAT_NAMES,
 )
 
@@ -440,7 +440,7 @@ def _infer(window: np.ndarray, true_label: int | None = None):
         # Compute distance to centroid so we can log it whether or not the gate
         # fires — makes it easy to tell from realtime.log when standing windows
         # are drifting beyond ref_dist (e.g. natural sway accumulating).
-        from feature_extraction import _calib_window_features
+        from src.feature_extraction import _calib_window_features
         _ci = s.calib_user_rest
         _z  = (_calib_window_features(window) - _ci["feat_mean"]) / _ci["feat_std"]
         _dist = float(np.sum(np.abs(_z - _ci["centroid"])))

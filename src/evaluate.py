@@ -17,12 +17,12 @@ from sklearn.metrics import (
 )
 
 import config as cfg
-from data_loader import load_directory, apply_label_remap, extract_windows
-from feature_extraction import extract_features, ACC_FEAT_IDX
+from src.data_loader import load_directory, apply_label_remap, extract_windows
+from src.feature_extraction import extract_features, ACC_FEAT_IDX
 
 
 def load_and_prepare():
-    from data_loader import load_directory
+    from src.data_loader import load_directory
     import pandas as pd
     dyn  = load_directory(cfg.DYN_DIR,  "dynamic")
     stat = load_directory(cfg.STAT_DIR, "static")

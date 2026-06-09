@@ -19,8 +19,8 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, accuracy_score, f1_score
 
 import config as cfg
-from data_loader import load_directory, apply_label_remap, extract_windows
-from feature_extraction import extract_features, FEAT_NAMES, ACC_FEAT_IDX
+from src.data_loader import load_directory, apply_label_remap, extract_windows
+from src.feature_extraction import extract_features, FEAT_NAMES, ACC_FEAT_IDX
 
 
 def load_all_data(dyn_dir: str, stat_dir: str) -> tuple:
