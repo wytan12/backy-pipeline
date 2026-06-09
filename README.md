@@ -1,8 +1,7 @@
 # BACKY Pipeline
 
 BACKY is a wearable device with **6 force-sensitive resistors (FSR)** and a **3-axis
-accelerometer (IMU)**. It classifies lifting postures in real time (goodpickup, forward bend, backward bend, twisting) while 
-during non-lifting activity (walking, sitting, standing).
+accelerometer (IMU)**. It classifies lifting postures in real time, including good pickup, forward bend, backward bend, and twisting, while distinguishing them from non-lifting activities such as walking, sitting, and standing.
 
 It runs a three-stage inference pipeline:
 **Standing Calibration Gate → RF Validity Gate → RF Posture Classifier**
@@ -15,7 +14,6 @@ It runs a three-stage inference pipeline:
 - **[uv](https://docs.astral.sh/uv/)** for environment management (recommended), or conda
 - **OS:** Windows / macOS / Linux (developed on Windows 11, PowerShell)
 - **For Live BLE mode only:** Bluetooth adapter + the physical BACKY device in range (`bleak`)
-- **GPU (optional):** only needed to re-run the transformer/NPU experiment notebooks
 
 Core dependencies (installed by `uv sync`): `numpy`, `pandas`, `scikit-learn`,
 `streamlit`, `plotly`, `bleak`, `matplotlib`, `seaborn`.
@@ -88,24 +86,25 @@ Device / CSV  →  9 channels (sensor1-6, ax, ay, az) @ 5 Hz
       ▼  column rename + sliding window  (T=10 samples, stride=5  →  1 decision / 1.0 s)
       │
  ┌────┴─────────────────────────────────────────────────────────┐
- │ STAGE 0 — Standing Calibration Gate  (feature_extraction.py)  │
- │  • One-time: user stands still 5 s → personalised reference   │
- │  • Per window: 7 calib features → z-score → L1 distance        │
- │  • dist < ref_dist  →  IGNORE (it's standing, skip the RFs)    │
+ │ STAGE 0 — Standing Calibration Gate  (feature_extraction.py) │
+ │  • One-time: user stands still 5 s → personalised reference  │
+ │  • Per window: 7 calib features → z-score → L1 distance      │
+ │  • dist < ref_dist  →  IGNORE (it's standing, skip the RFs)  │
  └────┬─────────────────────────────────────────────────────────┘
       ▼  extract_features()  →  38 hand-crafted features
  ┌────┴─────────────────────────────────────────────────────────┐
- │ STAGE 1 — Validity Gate RF   (20 trees, depth 5, all 38 feat) │
- │  • p_valid = predict_proba()                                   │
- │  • p_valid <  GATE_THRESHOLD (0.60)  →  IGNORE                  │
- │  • p_valid >= GATE_THRESHOLD         →  accept, go to Stage 2  │
+ │ STAGE 1 — Validity Gate RF   (20 trees, depth 5, all 38 feat)│
+ │  • p_valid = predict_proba()                                 │
+ │  • p_valid <  GATE_THRESHOLD (0.60)  →  IGNORE               │
+ │  • p_valid >= GATE_THRESHOLD         →  accept, go to Stage 2│
  └────┬─────────────────────────────────────────────────────────┘
       ▼
  ┌────┴─────────────────────────────────────────────────────────┐
- │ STAGE 2 — Posture RF   (30 trees, depth 8, 16 ACC-only feat)  │
- │  → 0 good_pickup  1 forward_bend  2 backward_bend  3 twisting  │
+ │ STAGE 2 — Posture RF   (30 trees, depth 8, 16 ACC-only feat) │
+ │  → 0 good_pickup  1 forward_bend  2 backward_bend  3 twisting│
  └────┬─────────────────────────────────────────────────────────┘
-      ▼  final label + confidence  (logged to logs/realtime.log)
+      ▼  
+  final label + confidence  (logged to logs/realtime.log)
 ```
 
 ### Why three stages
