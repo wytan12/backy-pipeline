@@ -1,0 +1,13 @@
+skills/
+reports/
+notebook/
+models*/
+logs/
+fig/
+data/
+cnnrf/
+.*/
+__pycache__/
+node_modules/
+*.ipynb
+scripts/

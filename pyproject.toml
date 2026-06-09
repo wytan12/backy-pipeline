@@ -1,0 +1,15 @@
+[project]
+name = "backy-mcu-pipeline"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "numpy",
+    "pandas",
+    "scikit-learn",
+    "streamlit>=1.32",
+    "plotly",
+    "bleak",
+    "matplotlib>=3.10.9",
+    "seaborn>=0.13.2",
+    "ipykernel>=7.2.0",
+]
